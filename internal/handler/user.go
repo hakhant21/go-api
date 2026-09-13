@@ -23,6 +23,13 @@ func (h *UserHandler) Register(r *gin.RouterGroup) {
 	g.DELETE("/:id", h.delete)
 }
 
+// @Summary Create user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param request body dto.CreateUserRequest true "User request"
+// @Success 201 {object} dto.UserResponse
+// @Router /users [post]
 func (h *UserHandler) create(c *gin.Context) {
 	var req dto.CreateUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -41,6 +48,13 @@ func (h *UserHandler) create(c *gin.Context) {
 	c.JSON(http.StatusCreated, dto.UserToResponse(u))
 }
 
+// @Summary List users
+// @Tags users
+// @Produce json
+// @Param page query int false "Page number"
+// @Param limit query int false "Items per page"
+// @Success 200 {object} PaginatedResponse
+// @Router /users [get]
 func (h *UserHandler) list(c *gin.Context) {
 	var q dto.ListUsersQuery
 	_ = c.ShouldBindQuery(&q)
@@ -62,6 +76,12 @@ func (h *UserHandler) list(c *gin.Context) {
 	c.JSON(http.StatusOK, PaginatedResponse{Data: out, Total: total, Page: q.Page, Limit: q.Limit})
 }
 
+// @Summary Get user
+// @Tags users
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {object} dto.UserResponse
+// @Router /users/{id} [get]
 func (h *UserHandler) get(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
@@ -76,6 +96,14 @@ func (h *UserHandler) get(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.UserToResponse(u))
 }
 
+// @Summary Update user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Param request body dto.UpdateUserRequest true "User update"
+// @Success 200 {object} dto.UserResponse
+// @Router /users/{id} [put]
 func (h *UserHandler) update(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
@@ -99,6 +127,11 @@ func (h *UserHandler) update(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.UserToResponse(u))
 }
 
+// @Summary Delete user
+// @Tags users
+// @Param id path int true "User ID"
+// @Success 204
+// @Router /users/{id} [delete]
 func (h *UserHandler) delete(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {

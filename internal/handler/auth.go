@@ -33,6 +33,14 @@ func (h *AuthHandler) Register(r *gin.RouterGroup) {
 	g.POST("/reset-password", h.resetPassword)
 }
 
+// @Summary Login
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body dto.LoginRequest true "Login request"
+// @Success 200 {object} dto.AuthResponse
+// @Failure 401 {object} ErrorResponse
+// @Router /auth/login [post]
 func (h *AuthHandler) login(c *gin.Context) {
 	var req dto.LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -51,6 +59,13 @@ func (h *AuthHandler) login(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// @Summary Refresh access token
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body dto.RefreshRequest true "Refresh request"
+// @Success 200 {object} dto.AuthResponse
+// @Router /auth/refresh [post]
 func (h *AuthHandler) refresh(c *gin.Context) {
 	var req dto.RefreshRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -69,6 +84,12 @@ func (h *AuthHandler) refresh(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// @Summary Logout
+// @Tags auth
+// @Accept json
+// @Param request body dto.RefreshRequest true "Refresh request"
+// @Success 204
+// @Router /auth/logout [post]
 func (h *AuthHandler) logout(c *gin.Context) {
 	var req dto.RefreshRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -82,6 +103,12 @@ func (h *AuthHandler) logout(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+// @Summary Verify email
+// @Tags auth
+// @Accept json
+// @Param request body dto.VerifyEmailRequest true "Verification request"
+// @Success 204
+// @Router /auth/verify-email [post]
 func (h *AuthHandler) verifyEmail(c *gin.Context) {
 	var req dto.VerifyEmailRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -99,6 +126,12 @@ func (h *AuthHandler) verifyEmail(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+// @Summary Resend verification email
+// @Tags auth
+// @Accept json
+// @Param request body dto.ResendVerificationRequest true "Resend request"
+// @Success 204
+// @Router /auth/resend-verification [post]
 func (h *AuthHandler) resendVerification(c *gin.Context) {
 	var req dto.ResendVerificationRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -113,6 +146,12 @@ func (h *AuthHandler) resendVerification(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+// @Summary Request password reset
+// @Tags auth
+// @Accept json
+// @Param request body dto.ForgotPasswordRequest true "Password reset request"
+// @Success 204
+// @Router /auth/forgot-password [post]
 func (h *AuthHandler) forgotPassword(c *gin.Context) {
 	var req dto.ForgotPasswordRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -127,6 +166,12 @@ func (h *AuthHandler) forgotPassword(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+// @Summary Reset password
+// @Tags auth
+// @Accept json
+// @Param request body dto.ResetPasswordRequest true "Password reset request"
+// @Success 204
+// @Router /auth/reset-password [post]
 func (h *AuthHandler) resetPassword(c *gin.Context) {
 	var req dto.ResetPasswordRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -144,6 +189,12 @@ func (h *AuthHandler) resetPassword(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+// @Summary Get current user
+// @Tags auth
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} dto.UserResponse
+// @Router /auth/me [get]
 func (h *AuthHandler) Me(c *gin.Context) {
 	uid, ok := middleware.GetUserID(c)
 	if !ok {
