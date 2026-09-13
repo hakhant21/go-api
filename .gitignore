@@ -1,0 +1,12 @@
+.env
+.env.local
+*.exe
+*.out
+*.test
+bin/
+tmp/
+coverage.out
+coverage.html
+/docs/
+!/docs/.gitkeep
+!/docs/docs.go
